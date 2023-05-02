@@ -38,7 +38,7 @@ def new_error() -> str:
 @app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def auth_forb() -> str:
     """
-    The user is authenticated but 
+    The user is authenticated but
     forbidden
     """
     return abort(403, description="forbidden")
