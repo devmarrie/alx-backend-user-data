@@ -16,13 +16,13 @@ class Auth:
         To be updated
         """
         return False
-    
+
     def authorization_header(self, request=None):
         """
         To be updated
         """
         return None
-    
+
     def current_user(self, request=None) -> TypeVar('User'):
         """
         To be updated
