@@ -33,3 +33,12 @@ def new_error() -> str:
     401 error by using abort
     """
     return abort(401, description="Unauthorised")
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def auth_forb() -> str:
+    """
+    The user is authenticated but 
+    forbidden
+    """
+    return abort(403, description="forbidden")
