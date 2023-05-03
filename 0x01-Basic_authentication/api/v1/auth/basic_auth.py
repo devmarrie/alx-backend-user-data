@@ -59,6 +59,5 @@ class BasicAuth(Auth):
             return (None, None)
         splited = decoded_base64_authorization_header.split(":")
         email = splited[0]
-        password = splited[-1]
+        password = splited[1]
         return (email, password)
-    
