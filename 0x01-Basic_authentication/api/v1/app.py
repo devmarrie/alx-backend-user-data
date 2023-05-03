@@ -20,7 +20,7 @@ if auth:
 
 
 @app.before_request
-def load_user() -> str:
+def load_user():
     """
     Filter the request before
     allowing user log in
@@ -35,9 +35,9 @@ def load_user() -> str:
         ]
         if auth.require_auth(request.path, remove):
             if auth.authorization_header(request) is None:
-                abort(401, description="Unauthorized")
+                return abort(401, description="Unauthorized")
             if auth.current_user(request) is None:
-                abort(403, description="Forbidden")
+                return abort(403, description="Forbidden")
 
 
 @app.errorhandler(404)
