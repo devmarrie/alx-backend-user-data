@@ -17,7 +17,7 @@ class Auth:
         """
         if path is None:
             return True
-        elif excluded_paths == [] or excluded_paths is None:
+        elif excluded_paths is None or excluded_paths == []:
             return True
         elif path in excluded_paths:
             return False
@@ -36,7 +36,13 @@ class Auth:
         """
         To be updated
         """
-        return None
+        if request is None:
+            return None
+        header = request.headers.get('Authorization')
+        if header:
+            return header
+        else:
+            return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
