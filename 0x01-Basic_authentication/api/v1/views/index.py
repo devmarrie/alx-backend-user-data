@@ -32,7 +32,7 @@ def new_error() -> str:
     This endpoint must raise a
     401 error by using abort
     """
-    return abort(401, description="Unauthorised")
+    return abort(401, description="Unauthorized")
 
 
 @app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
