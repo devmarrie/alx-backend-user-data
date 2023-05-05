@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-from base import Base
 """
  different storange
  from the one we are used to
 """
+from base import Base
+
 
 
 class UserSession(Base):
