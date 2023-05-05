@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Session db authentiction
+and storage for our ske a file
 """
 from .session_exp_auth import SessionExpAuth
 
@@ -8,6 +9,7 @@ from .session_exp_auth import SessionExpAuth
 class SessionDBAuth(SessionExpAuth):
     """
     move them to db
+    from current session
     """
     def create_session(self, user_id=None):
         """
