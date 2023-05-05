@@ -6,14 +6,13 @@
 from base import Base
 
 
-
 class UserSession(Base):
     """
     Creating a user session
     """
     def __init__(self, *args: list, **kwargs: dict):
         """
-        class constructor
+        Initialize a UserSession instance
         """
         super().__init__(*args, **kwargs)
         self.user_id = kwargs.get('user_id')
