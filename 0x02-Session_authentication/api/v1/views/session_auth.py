@@ -17,7 +17,6 @@ def user_session():
     """
     email = request.form.get('email')
     password = request.form.get('password')
-    session_name = os.getenv('SESSION_NAME')
     if email is None or len(email) == 0:
         response = make_response(jsonify('{ "error": "email missing" }'), 400)
         return response
@@ -25,19 +24,17 @@ def user_session():
         presponse = make_response(
             jsonify('{ "error": "password missing" }'), 400)
         return presponse
-    try:
-        users = User.search({"email": email})
-        if not users or users == []:
-            return make_response(
-                jsonify('{ "error": "no user found for this email" }'), 404)
-        for user in users:
-            if not user.is_valid_password(password):
-                return make_response(jsonify(
-                    '{ "error": "wrong password" } '), 401)
-            from api.v1.app import auth
-            sess_id = auth.create_session(user.id)
-            res = make_response(jsonify(user.to_json()))
-            res.set_cookie(session_name, sess_id)
-            return res
-    except Exception:
-        return None
+    users = User.search({"email": email})
+    if not users or users == []:
+        return make_response(
+            jsonify('{ "error": "no user found for this email" }'), 404)
+    for user in users:
+        if not user.is_valid_password(password):
+            return make_response(jsonify(
+                '{ "error": "wrong password" } '), 401)
+        from api.v1.app import auth
+        sess_id = auth.create_session(user.id)
+        res = make_response(jsonify(user.to_json()))
+        session_name = os.getenv('SESSION_NAME')
+        res.set_cookie(session_name, sess_id)
+        return res
