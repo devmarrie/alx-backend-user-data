@@ -36,3 +36,18 @@ class Auth:
         except (NoResultFound, InvalidRequestError):
             hash = _hash_password(password)
             return self._db.add_user(email, hash)
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """
+        Takes in an email and password
+        checks if its a vlid user
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+            hashed = user.hashed_password
+            pwd = password.encode('utf-8')
+            return bcrypt.checkpw(pwd, hashed)
+        except:
+            return False
+
+    
