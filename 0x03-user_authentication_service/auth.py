@@ -6,6 +6,7 @@ import bcrypt
 from db import DB
 from user import User
 from uuid import uuid4
+from typing import Union
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 
@@ -58,7 +59,7 @@ class Auth:
         except NoResultFound:
             return False
 
-    def create_session(self, email: str) -> str:
+    def create_session(self, email: str) -> Union[str, None]:
         """
         creates a session id from n email
         find the user corresponding to the email
@@ -73,7 +74,7 @@ class Auth:
         except NoResultFound:
             return None
 
-    def get_user_from_session_id(self, session_id: str) -> User:
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
         """
         Obtaining the user from a session
         """
@@ -83,4 +84,18 @@ class Auth:
             user = self._db.find_user_by(session_id=session_id)
             return user
         except NoResultFound:
+            return None
+
+    def destroy_session(self, user_id: int) -> None:
+        """
+        Destroys the existing session
+        Args:
+            user_id (int): user's id
+        Return:
+            None
+        """
+        try:
+            self._db.update_user(user_id, session_id=None)
+            return None
+        except ValueError:
             return None
