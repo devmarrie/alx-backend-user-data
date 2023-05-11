@@ -54,9 +54,10 @@ class DB:
         """
         all_users = self._session.query(User)
         for k, v in kwargs.items():
-            if k in User.__dict__:
-                for user in all_users:
-                    if getattr(user, k) == v:
-                        return user
-                    raise NoResultFound
-            raise InvalidRequestError
+            if k not in User.__dict__:
+                raise InvalidRequestError
+            for user in all_users:
+                if getattr(user, k) == v:
+                    return user
+        raise NoResultFound
+                
