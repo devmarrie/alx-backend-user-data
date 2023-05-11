@@ -22,6 +22,8 @@ def home() -> str:
 def users() -> str:
     """
     fetches the data to use from a form
+    create the user nd return the email
+    valueerror if the user exists
     """
     email = request.form.get("email")
     pwd = request.form.get("password")
