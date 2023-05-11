@@ -2,13 +2,18 @@
 """
 SQLAlchemy model named User
 """
-from flask_sqlalchemy import db
-from flask_user import UserMixin
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import  declarative_base
 
-class Users(db.Models, UserMixin):
+Base = declarative_base()
+
+class User(Base):
+    """
+    We define a class user with its properties
+    """
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, nullable=False)
-    hashed_password = db.Column(db.String, nullable=False)
-    session_id = db.Column(db.String, nullable=False)
-    reset_token = db.Column(db.String, nullable=False)
+    id = Column(Integer, primary_key=True)
+    email = Column(String(250), nullable=False)
+    hashed_password = Column(String(250), nullable=False)
+    session_id = Column(String(250), nullable=True)
+    reset_token = Column(String(250), nullable=True)
