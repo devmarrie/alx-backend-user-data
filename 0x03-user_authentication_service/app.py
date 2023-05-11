@@ -7,13 +7,13 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
-@app('/', methods=['GET'], strict_slashes=False)
+@app.route("/", methods=["GET"], strict_slashes=False)
 def home() -> str:
     """
     Return json respomse
     {"message": "Bienvenue"}
     """
-    return jsonify({{"message": "Bienvenue"}})
+    return jsonify({"message": "Bienvenue"})
 
 
 if __name__ == "__main__":
