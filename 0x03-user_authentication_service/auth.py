@@ -61,11 +61,14 @@ class Auth:
     def create_session(self, email: str) -> str:
         """
         creates a session id from n email
+        find the user corresponding to the email
+        generate a new UUID
+        store it in the database
         """
         try:
             user = self._db.find_user_by(email=email)
             sess_id = _generate_uuid()
-            user.session_id = sess_id
+            self._db.update_user(user.id, session_id=sess_id)
             return sess_id
         except NoResultFound:
             return None
