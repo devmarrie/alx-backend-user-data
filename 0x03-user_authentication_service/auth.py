@@ -5,6 +5,7 @@ Defining  hash password method
 import bcrypt
 from db import DB
 from user import User
+from uuid import uuid4
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 
@@ -18,6 +19,11 @@ def _hash_password(password: str) -> bytes:
     hashed = bcrypt.hashpw(pwd, salt)
     return hashed
 
+def _generate_uuid() -> str:
+        """
+        create new unique identifier
+        """
+        return str(uuid4())
 
 class Auth:
     """Auth class to interact with the authentication database.
@@ -49,3 +55,5 @@ class Auth:
             return bcrypt.checkpw(pwd, hashed)
         except NoResultFound:
             return False
+
+    
