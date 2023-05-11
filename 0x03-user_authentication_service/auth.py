@@ -47,7 +47,5 @@ class Auth:
             hashed = user.hashed_password
             pwd = password.encode('utf-8')
             return bcrypt.checkpw(pwd, hashed)
-        except:
+        except NoResultFound:
             return False
-
-    
