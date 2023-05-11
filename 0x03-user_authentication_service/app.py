@@ -49,6 +49,7 @@ def login():
     res.set_cookie("session_id", sess_id)
     return res
 
+
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def logout():
     sid = request.cookies.get("session_id")
@@ -57,7 +58,7 @@ def logout():
         abort(403)
     AUTH.destroy_session(res.id)
     return redirect("/")
-        
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
