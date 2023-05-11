@@ -3,6 +3,7 @@
 Basic flask app
 """
 from flask import Flask, jsonify, request, abort, redirect
+from sqlalchemy.orm.exc import NoResultFound
 from auth import Auth
 
 app = Flask(__name__)
@@ -52,12 +53,13 @@ def login():
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def logout():
-    sid = request.cookies.get("session_id")
-    res = AUTH.get_user_from_session_id(sid)
-    if sid is None or res is None:
+    try:
+        sid = request.cookies.get("session_id")
+        res = AUTH.get_user_from_session_id(sid)
+        AUTH.destroy_session(res.id)
+        return redirect("/")
+    except NoResultFound:
         abort(403)
-    AUTH.destroy_session(res.id)
-    return redirect("/")
 
 
 if __name__ == "__main__":
