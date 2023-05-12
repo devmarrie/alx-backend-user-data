@@ -4,6 +4,7 @@ Basic flask app
 """
 from flask import Flask, jsonify, request, abort, redirect
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 from auth import Auth
 
 app = Flask(__name__)
@@ -43,12 +44,14 @@ def login():
     """
     email = request.form.get("email")
     password = request.form.get("password")
-    if not AUTH.valid_login(email, password):
+    try:
+        AUTH.valid_login(email, password)
+        sess_id = AUTH.create_session(email)
+        res = jsonify({"email": email, "message": "logged in"})
+        res.set_cookie("session_id", sess_id)
+        return res
+    except InvalidRequestError:
         abort(401)
-    sess_id = AUTH.create_session(email)
-    res = jsonify({"email": email, "message": "logged in"})
-    res.set_cookie("session_id", sess_id)
-    return res
 
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
@@ -63,6 +66,18 @@ def logout():
         return redirect("/")
     except NoResultFound:
         abort(403)
+
+
+@app.route("/profile", methods=["GET"], strict_slashes=False)
+def profile():
+    """
+    Fetches the user profile
+    """
+    session_id = request.cookies.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        return jsonify({"email": user.email}), 200
+    abort(403)
 
 
 if __name__ == "__main__":
